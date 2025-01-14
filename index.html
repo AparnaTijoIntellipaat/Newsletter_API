@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe to Newsletter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Subscribe to Our Newsletter</h1>
+    <form id="subscriptionForm">
+        <input type="email" id="email" placeholder="Enter your email" required />
+        <button type="submit">Subscribe</button>
+    </form>
+    <div id="responseMessage" class="message"></div>
+</div>
+
+<script>
+    document.getElementById("subscriptionForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById("email").value;
+        
+        // Check if email is valid
+        if (!email) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // API Gateway URL from your previous step
+        const apiUrl = 'https://yu5mrqopf2.execute-api.us-east-1.amazonaws.com/prod/subscribe';
+
+        const data = {
+            email: email
+        };
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("responseMessage").textContent = data.message;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById("responseMessage").textContent = 'There was an error. Please try again later.';
+        });
+    });
+</script>
+
+</body>
+</html>
